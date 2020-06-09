@@ -6,7 +6,15 @@ import { Form, SubmitButton, List } from './styles';
 import Container from '../../components/Container';
 
 class Main extends Component {
-  state = { newRepo: '', repositories: [], loading: false, error: false };
+  constructor() {
+    super();
+    this.state = {
+      newRepo: '',
+      repositories: [],
+      loading: false,
+      error: false,
+    };
+  }
 
   componentDidMount() {
     const repositories = localStorage.getItem('repositories');

@@ -8,13 +8,16 @@ import Container from '../../components/Container';
 import { Loading, Owner, IssuesList, Pagination } from './styles';
 
 export default class Repository extends Component {
-  state = {
-    repository: {},
-    issues: [],
-    loading: true,
-    filter: 'open',
-    page: 1,
-  };
+  constructor() {
+    super();
+    this.state = {
+      repository: {},
+      issues: [],
+      loading: true,
+      filter: 'open',
+      page: 1,
+    };
+  }
 
   async componentDidMount() {
     const { match } = this.props;
@@ -39,6 +42,12 @@ export default class Repository extends Component {
   handlePageChange = async (e) => {
     const { name } = e.target;
     const { filter, repository, page } = this.state;
+
+    // cancela ação caso a página mínima seja atual
+    if (name === 'prev' && page <= 1) {
+      return false;
+    }
+
     const repoName = repository.full_name;
     this.setState({ loading: true });
     await this.setState({ page: name === 'next' ? page + 1 : page - 1 });
@@ -107,6 +116,7 @@ export default class Repository extends Component {
           <Pagination>
             <button
               name="prev"
+              disabled={page <= 1}
               onClick={(e) => this.handlePageChange(e)}
               type="button"
             >
